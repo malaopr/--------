@@ -437,7 +437,7 @@ class WorldExplorer {
         
         const coords = country.latlng || country.coordinates;
         if (coords && coords.length === 2) {
-            // Ждем немного чтобы DOM обновился
+            
             setTimeout(() => this.displayMap(coords, country.name?.common || country.name), 100);
         }
     }
