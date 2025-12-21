@@ -383,7 +383,7 @@ a { color: inherit; text-decoration: none; }
         padding: 8px;
     }
 }
-/* Флаги как изображения */
+
 .flag-container {
     text-align: center;
     margin-bottom: 12px;
@@ -435,14 +435,14 @@ a { color: inherit; text-decoration: none; }
     margin: 15px 0;
 }
 
-/* Таблица */
+
 .country-table .flag-cell {
     width: 50px;
     text-align: center;
     padding: 8px !important;
 }
 
-/* Карточка страны */
+
 .country-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -492,7 +492,7 @@ a { color: inherit; text-decoration: none; }
     background: var(--accent-light);
 }
 
-/* Детальная страница */
+
 .detail-header {
     display: flex;
     align-items: center;
@@ -590,7 +590,7 @@ a { color: inherit; text-decoration: none; }
 .hidden {
     display: none !important;
 }
-/* Эмодзи флаги */
+
 .nation-symbol {
     font-size: 64px !important;
     text-align: center;
@@ -614,12 +614,12 @@ a { color: inherit; text-decoration: none; }
     font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
 }
 
-/* Убедись что контейнеры достаточно большие */
+
 .country-card {
     min-height: 320px;
 }
 
-/* Если эмодзи не отображаются, покажи буквенные коды */
+
 .no-emoji .nation-symbol::after,
 .no-emoji .flag-cell::after,
 .no-emoji .detail-flag-large::after {
