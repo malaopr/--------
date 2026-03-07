@@ -1,0 +1,34 @@
+{
+  "routes": [
+    {
+      "path": "/",
+      "src": "src/pages/Dashboard.tsx"
+    },
+    {
+      "path": "/login",
+      "src": "src/pages/Login.tsx"
+    },
+    {
+      "path": "/register",
+      "src": "src/pages/Register.tsx"
+    },
+    {
+      "path": "/messages",
+      "src": "src/pages/Messages.tsx"
+    },
+    {
+      "path": "/groups",
+      "src": "src/pages/Groups.tsx"
+    },
+    {
+      "path": "/events",
+      "src": "src/pages/Events.tsx"
+    }
+  ],
+  "components": [
+    { "name": "Sidebar", "src": "src/components/Sidebar.tsx" },
+    { "name": "EventCard", "src": "src/components/EventCard.tsx" },
+    { "name": "GroupCard", "src": "src/components/GroupCard.tsx" },
+    { "name": "MessageContact", "src": "src/components/MessageContact.tsx" }
+  ]
+}
