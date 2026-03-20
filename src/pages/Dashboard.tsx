@@ -1,79 +1,168 @@
-import React from 'react';
-import { Typography, Card, Button } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Typography, Card, Button, Spin, Pagination, Alert } from 'antd';
 import { ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import EventCard from '../components/EventCard';
-import GroupCard from '../components/GroupCard';
+import { mockApi, Post, Event } from '../mocks/data';
 
 const { Title, Paragraph } = Typography;
+
+const POSTS_PER_PAGE = 3;
+const EVENTS_PER_PAGE = 2;
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
 
-  console.log('Rendered Dashboard main page');
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [postsPage, setPostsPage] = useState(1);
+  const [postsTotal, setPostsTotal] = useState(0);
+  const [postsLoading, setPostsLoading] = useState(false);
+  const [postsError, setPostsError] = useState<string | null>(null);
 
-  
-  const sampleEvents = [
-    { title: "Лекция по ИИ", date: "Сегодня, 18:00", location: "Аудитория 101", img: "https://images.unsplash.com/photo-1591453001853-4856a95f00e9?w=500&h=300&fit=crop" },
-    { title: "Сбор волонтеров", date: "Завтра, 12:00", location: "Главная площадь", img: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=300&fit=crop" }
-  ];
+  const [events, setEvents] = useState<Event[]>([]);
+  const [eventsPage, setEventsPage] = useState(1);
+  const [eventsTotal, setEventsTotal] = useState(0);
+  const [eventsLoading, setEventsLoading] = useState(false);
 
-  const sampleGroups = [
-    { name: "IT Клуб", desc: "Разработка, код, алгоритмы", members: 45, img: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=100&h=100&fit=crop" },
-    { name: "Музыкальный бэнд", desc: "Студенческая группа и джемы", members: 12, img: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=100&h=100&fit=crop" },
-    { name: "Дискуссионный клуб", desc: "Обсуждение актуальных тем и дебаты", members: 28, img: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=100&h=100&fit=crop" }
-  ];
+  useEffect(() => {
+    setPostsLoading(true);
+    setPostsError(null);
+    mockApi
+      .getFeed(postsPage, POSTS_PER_PAGE)
+      .then((res) => {
+        setPosts(res.data);
+        setPostsTotal(res.total);
+      })
+      .catch(() => setPostsError('Не удалось загрузить публикации'))
+      .finally(() => setPostsLoading(false));
+  }, [postsPage]);
+
+  useEffect(() => {
+    setEventsLoading(true);
+    mockApi
+      .getEvents(eventsPage, EVENTS_PER_PAGE)
+      .then((res) => {
+        setEvents(res.data);
+        setEventsTotal(res.total);
+      })
+      .finally(() => setEventsLoading(false));
+  }, [eventsPage]);
 
   return (
     <div style={{ padding: '32px', maxWidth: '1000px', margin: '0 auto' }}>
       <div style={{ marginBottom: '40px' }}>
         <Title level={2}>Добро пожаловать в Campus!</Title>
         <Paragraph type="secondary" style={{ fontSize: '16px' }}>
-          Здесь вы найдете все главные события, активности и материалы для студентов.
+          Здесь вы найдёте главные события, активности и материалы лицея.
         </Paragraph>
       </div>
 
+      {/* Мероприятия */}
       <div style={{ marginBottom: '48px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-          <Title level={4} style={{ margin: 0 }}>Ближайшие события</Title>
-          <Button type="link" onClick={() => navigate('/events')} iconPosition="end" icon={<ChevronRight size={16} />}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '16px',
+          }}
+        >
+          <Title level={4} style={{ margin: 0 }}>
+            Ближайшие мероприятия
+          </Title>
+          <Button
+            type="link"
+            onClick={() => navigate('/events')}
+            iconPosition="end"
+            icon={<ChevronRight size={16} />}
+          >
             Посмотреть все
           </Button>
         </div>
-        
-        {}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '24px' }}>
-          {sampleEvents.map((ev, index) => (
-            <EventCard 
-              key={index} 
-              title={ev.title} 
-              date={ev.date} 
-              location={ev.location} 
-              imageUrl={ev.img} 
-            />
-          ))}
-        </div>
+
+        <Spin spinning={eventsLoading}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '24px', minHeight: '200px' }}>
+            {events.map((ev) => (
+              <EventCard
+                key={ev.id}
+                title={ev.title}
+                date={
+                  ev.event_date
+                    ? new Date(ev.event_date).toLocaleString('ru-RU', {
+                        day: 'numeric',
+                        month: 'long',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })
+                    : 'Новость'
+                }
+                location={ev.location}
+                imageUrl={ev.image_url}
+              />
+            ))}
+          </div>
+          {eventsTotal > EVENTS_PER_PAGE && (
+            <div style={{ marginTop: '16px', textAlign: 'center' }}>
+              <Pagination
+                current={eventsPage}
+                total={eventsTotal}
+                pageSize={EVENTS_PER_PAGE}
+                onChange={setEventsPage}
+                size="small"
+              />
+            </div>
+          )}
+        </Spin>
       </div>
 
+      {/* Лента публикаций */}
       <div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-          <Title level={4} style={{ margin: 0 }}>Популярные группы</Title>
-          <Button type="link" onClick={() => navigate('/groups')} iconPosition="end" icon={<ChevronRight size={16} />}>
-            Найти больше
-          </Button>
-        </div>
+        <Title level={4} style={{ margin: '0 0 16px 0' }}>
+          Лента публикаций
+        </Title>
 
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '24px' }}>
-          {sampleGroups.map((grp, index) => (
-            <GroupCard 
-              key={index}
-              name={grp.name}
-              description={grp.desc}
-              membersCount={grp.members}
-              avatarUrl={grp.img}
-            />
-          ))}
-        </div>
+        {postsError && (
+          <Alert type="error" message={postsError} style={{ marginBottom: '16px' }} />
+        )}
+
+        <Spin spinning={postsLoading}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', minHeight: '200px' }}>
+            {posts.map((post) => (
+              <Card key={post.id} hoverable styles={{ body: { padding: '20px' } }}>
+                <Typography.Text type="secondary" style={{ fontSize: '12px' }}>
+                  {post.group_name} · {post.author_name} ·{' '}
+                  {new Date(post.created_at).toLocaleDateString('ru-RU')}
+                </Typography.Text>
+                <Title level={5} style={{ margin: '6px 0 8px 0' }}>
+                  {post.title}
+                </Title>
+                <Paragraph type="secondary" ellipsis={{ rows: 2 }} style={{ marginBottom: '12px' }}>
+                  {post.content}
+                </Paragraph>
+                <div style={{ display: 'flex', gap: '16px' }}>
+                  <Typography.Text type="secondary" style={{ fontSize: '13px' }}>
+                    ❤️ {post.likes_count}
+                  </Typography.Text>
+                  <Typography.Text type="secondary" style={{ fontSize: '13px' }}>
+                    💬 {post.comments_count}
+                  </Typography.Text>
+                </div>
+              </Card>
+            ))}
+          </div>
+
+          {postsTotal > POSTS_PER_PAGE && (
+            <div style={{ marginTop: '24px', textAlign: 'center' }}>
+              <Pagination
+                current={postsPage}
+                total={postsTotal}
+                pageSize={POSTS_PER_PAGE}
+                onChange={setPostsPage}
+                showTotal={(total) => `Всего ${total} публикаций`}
+              />
+            </div>
+          )}
+        </Spin>
       </div>
     </div>
   );
