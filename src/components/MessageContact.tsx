@@ -12,7 +12,6 @@ interface MessageContactProps {
   isActive?: boolean;
 }
 
-// Isolated message contact item for the sidebar
 const MessageContact: React.FC<MessageContactProps> = ({
   name = "Александр Иванов",
   lastMessage = "Привет, ты пойдешь на лекцию завтра?",
