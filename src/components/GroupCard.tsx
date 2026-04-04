@@ -12,7 +12,7 @@ interface GroupCardProps {
   avatarUrl?: string;
 }
 
-// GroupCard represents a single club or group in the campus
+
 const GroupCard: React.FC<GroupCardProps> = ({
   name = "IT Club",
   description = "Сообщество для программистов и энтузиастов новых технологий.",
