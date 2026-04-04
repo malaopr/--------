@@ -5,14 +5,14 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 const { Title } = Typography;
 
-// Standalone Sidebar component
+
 const Sidebar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
   console.log('Rendering Sidebar component');
 
-  // Menu items configured directly with simple lucide-react icons
+ 
   const menuItems = [
     {
       key: '/',
