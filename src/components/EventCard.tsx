@@ -12,7 +12,7 @@ interface EventCardProps {
   imageUrl?: string;
 }
 
-// EventCard with default values for proper isolated preview support
+
 const EventCard: React.FC<EventCardProps> = ({
   title = "Welcome Party 2024",
   date = "2024-09-01 18:00",
