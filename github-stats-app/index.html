@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Статистика репозиториев GitHub</title>
+    <link rel="stylesheet" href="style.css">e4g3kyh0
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Статистика репозиториев GitHub</h1>
+            <p class="app-description">
+                Введите список репозиториев в формате "владелец/название" (по одному на строку) и нажмите "Собрать статистику", чтобы получить информацию о репозиториях и визуализировать данные.
+            </p>
+        </header>
+
+        <div class="main-content">
+            <div class="input-section">
+                <div class="input-area">
+                    <textarea id="repoInput" placeholder="Введите репозитории в формате:&#10;facebook/react&#10;microsoft/vscode&#10;vuejs/vue"></textarea>
+                    <button id="fetchButton" class="btn">Собрать статистику</button>
+                    <div id="errorMessage" class="error-message"></div>
+                </div>
+            </div>
+
+            <div class="cards-section">
+                <div class="sort-controls">
+                    <h3>Репозитории</h3>
+                    <div>
+                        <button id="sortStarsAsc" class="sort-btn">По звездам ↑</button>
+                        <button id="sortStarsDesc" class="sort-btn active">По звездам ↓</button>
+                    </div>
+                </div>
+                <div id="repoCards"></div>
+            </div>
+        </div>
+
+        <div class="loading" id="loadingIndicator">
+            <div class="spinner"></div>
+            <p>Загрузка данных...</p>
+        </div>
+
+        <div class="charts-section">
+            <div class="chart-container">
+                <h3>Количество звезд</h3>
+                <canvas id="starsChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <h3>Размеры репозиториев</h3>
+                <canvas id="sizesChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>

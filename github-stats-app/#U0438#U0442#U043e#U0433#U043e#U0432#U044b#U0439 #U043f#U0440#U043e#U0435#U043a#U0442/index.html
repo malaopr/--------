@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Поиск стран</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <section class="header-area">
+      <h1 class="brand">🌸 Страны мира</h1>
+      <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Переключить тему">
+        <span id="themeIcon">🌙</span>
+      </button>
+    </section>
+
+    <section class="content-area" id="mainView">
+      <aside class="filters-panel" aria-label="Фильтры">
+        <div class="filter-item">
+          <label for="searchInput" class="label-compact">Поиск</label>
+          <input id="searchInput" class="input-field" type="text" placeholder="Название страны" />
+        </div>
+
+        <div class="filter-item">
+          <label for="regionSelect" class="label-compact">Регион</label>
+          <select id="regionSelect" class="select-field">
+            <option value="">Все</option>
+          </select>
+        </div>
+
+        <div class="filter-item range-row">
+          <label class="label-compact">Население</label>
+          <div class="range-pair">
+            <input id="populationMin" class="input-field small" type="number" placeholder="Минимум" />
+            <input id="populationMax" class="input-field small" type="number" placeholder="Максимум" />
+          </div>
+        </div>
+
+        <div class="filter-item range-row">
+          <label class="label-compact">Площадь</label>
+          <div class="range-pair">
+            <input id="areaMin" class="input-field small" type="number" placeholder="Минимум" />
+            <input id="areaMax" class="input-field small" type="number" placeholder="Максимум" />
+          </div>
+        </div>
+
+        <div class="view-toggle" aria-label="Тип отображения">
+          <label><input type="radio" name="viewType" value="table" /> Таблица</label>
+          <label><input type="radio" name="viewType" value="cards" checked /> Карточки</label>
+        </div>
+      </aside>
+
+      <section class="results-area" id="loading" aria-live="polite">Загрузка данных...</section>
+
+      <section class="results-area" id="error" role="alert" aria-live="polite"></section>
+
+      <section class="country-list" id="countryList" aria-label="Список стран"></section>
+    </section>
+
+    <section id="detailView" class="detail-area hidden" aria-label="Детали страны">
+      <header class="detail-header">
+        <button class="nav-back" id="backButton">Назад</button>
+      </header>
+
+      <div id="detailLoading" class="loading-dots">Загрузка...</div>
+      <div id="detailError" class="error" role="alert" aria-live="polite"></div>
+
+      <div id="detailContent" class="country-detail"></div>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="main.js"></script>
+  <script src="api.js"></script>
+  
+</body>
+</html>
